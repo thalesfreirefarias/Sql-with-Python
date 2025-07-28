@@ -14,7 +14,7 @@
 ``` Import Data Base
 import matplotlib.pyplot as plt
 import pandas as pd
-###Conectar e interagir com bancos de dados em Python####
+### Conectar e interagir com bancos de dados em Python ####
 from sqlalchemy import create_engine, inspect, text
 
 itens_pedidos = pd.read_csv(url_itens_pedidos)
@@ -25,7 +25,7 @@ vendedores = pd.read_csv(url_vendedores)
 ```
 
 ``` Create Data base Local
-###Banco de dados local na máquina ###
+### Banco de dados local na máquina ###
 engine = create_engine('sqlite:///:memory:')
 
 produtos.to_sql('produtos',engine,index=False)
@@ -39,8 +39,63 @@ inspector = inspect(engine)
 print(inspector.get_table_names())
 ```
 
+### Day 2: Consult Dataframe
+```
+Using SQL to read Dataframe:
 
+query = 'SELECT CONDICAO FROM produtos'
+pd.read_sql(text(query),engine)
 
+with engine.connect() as conexao:
+  consulta = conexao.execute(text(query))
+  dados = consulta.fetchall()
+pd.DataFrame(dados,columns=consulta.keys())
+
+```
+
+```
+transform a function:
+def sql_df(query):
+  with engine.connect() as conexao:
+    consulta = conexao.execute(text(query))
+    dados = consulta.fetchall()
+  return pd.DataFrame(dados,columns=consulta.keys())
+```
+
+```
+Groupby each condition :
+query = '''SELECT CONDICAO, COUNT(*) AS 'Quantidade'
+FROM PRODUTOS 
+GROUP BY CONDICAO;'''
+df_produtos = sql_df(query)
+df_produtos
+
+```
+```
+Create a plt Bar with these conditions:
+plt.bar(df_produtos['Condicao'],df_produtos['Quantidade'] , color='#9353FF') 
+plt.title('Contagem por tipo de condições dos produtos')
+plt.show()
+```
+```
+query = '''SELECT PRODUTOS.PRODUTO, SUM(ITENS_PEDIDOS.QUANTIDADE) AS Quantidade
+FROM ITENS_PEDIDOS, PRODUTOS
+WHERE ITENS_PEDIDOS.PRODUTO_ID = PRODUTOS.PRODUTO_ID
+GROUP BY PRODUTOS.PRODUTO
+LIMIT 5 ;
+'''
+sql_df(query)
+```
+
+```
+Create a plt Bar to show TOP 5 sellers
+df_prod_quantidade = df_prod_quantidade.sort_values(by='Quantidade', ascending=True)
+
+plt.barh(df_prod_quantidade['produto'], df_prod_quantidade['Quantidade'], color='#9353FF')
+plt.title('Produtos mais vendidos')
+plt.xlabel('Quantidade vendida')
+plt.show()
+```
 
 ### Adjustments and improvements.
 
