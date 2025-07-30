@@ -97,6 +97,31 @@ plt.xlabel('Quantidade vendida')
 plt.show()
 ```
 
+### Day 3: Group Values
+```
+Group for a specific year
+query = '''
+SELECT vendedor_id, COUNT(*) AS 'Quantidade'
+FROM PEDIDOS
+WHERE strftime('%Y',data_compra) = '2020'
+GROUP BY vendedor_id
+ORDER BY Quantidade DESC
+LIMIT 5
+'''
+sql_df(query)
+
+```
+Conecting two databases and group values
+query = '''SELECT VENDEDORES.NOME_VENDEDOR, AVG(PEDIDOS.TOTAL) AS 'Valor médio por vendas'
+FROM PEDIDOS, VENDEDORES
+WHERE strftime('%Y',data_compra) = '2020' AND VENDEDORES.VENDEDOR_ID = PEDIDOS.VENDEDOR_ID
+GROUP BY VENDEDORES.NOME_VENDEDOR
+ORDER BY AVG(PEDIDOS.TOTAL) DESC;
+'''
+sql_df(query)
+
+```
+
 ### Adjustments and improvements.
 
 The project is still under development, and the upcoming updates will focus on the following tasks:
