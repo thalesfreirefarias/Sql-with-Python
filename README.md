@@ -121,6 +121,7 @@ ORDER BY AVG(PEDIDOS.TOTAL) DESC;
 sql_df(query)
 
 ```
+````
 
 ### Adjustments and improvements.
 
