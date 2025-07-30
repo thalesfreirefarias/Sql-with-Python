@@ -123,6 +123,38 @@ ORDER BY AVG(PEDIDOS.TOTAL) DESC;
 sql_df(query)
 
 ```
+
+### Day 4: Group Values
+
+```
+Best sellers by state
+
+query = '''SELECT ESTADO, COUNT(*) AS Pedidos
+FROM ITENS_PEDIDOS
+GROUP BY ESTADO
+ORDER BY Pedidos DESC
+LIMIT 5;
+'''
+sql_df(query)
+
+```
+
+```
+query = '''SELECT VENDEDORES.NOME_VENDEDOR, COUNT(*) AS quantidade_vendas
+FROM PEDIDOS
+JOIN VENDEDORES ON VENDEDORES.VENDEDOR_ID = PEDIDOS.VENDEDOR_ID
+JOIN ITENS_PEDIDOS ON ITENS_PEDIDOS.PEDIDO_ID = PEDIDOS.PEDIDO_ID
+WHERE ITENS_PEDIDOS.ESTADO = 'BR-SP'
+GROUP BY VENDEDORES.NOME_VENDEDOR
+ORDER BY quantidade_vendas DESC;
+'''
+sql_df(query)
+
+```
+
+
+
+
 ```
 
 ### Adjustments and improvements.
@@ -135,6 +167,7 @@ The following tools were used in the construction of the project:
 
 - [Python](<https://www.python.org/doc//>)
 - [SQL](<https://www.postgresql.org/docs/current/sql.html>)
+
 
 
 ## 🤝 Creator
