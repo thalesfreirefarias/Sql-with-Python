@@ -111,6 +111,8 @@ LIMIT 5
 sql_df(query)
 
 ```
+
+```
 Conecting two databases and group values
 query = '''SELECT VENDEDORES.NOME_VENDEDOR, AVG(PEDIDOS.TOTAL) AS 'Valor médio por vendas'
 FROM PEDIDOS, VENDEDORES
@@ -121,7 +123,7 @@ ORDER BY AVG(PEDIDOS.TOTAL) DESC;
 sql_df(query)
 
 ```
-````
+```
 
 ### Adjustments and improvements.
 
